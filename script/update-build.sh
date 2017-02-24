@@ -6,9 +6,15 @@
 #
 ######################################################
 
+HOST=$(uname -n)
+if [[ "${HOST}" = *calcentral* ]]; then
+  APP_MODE="calcentral"
+else
+  APP_MODE="junction"
+fi
 WAR_URL=${WAR_URL:="https://bamboo.media.berkeley.edu/bamboo/browse/MYB-MVPWAR/latest/artifact/JOB1/warfile/calcentral.knob"}
 MAX_ASSET_AGE_IN_DAYS=${MAX_ASSET_AGE_IN_DAYS:="45"}
-DOC_ROOT="/var/www/html/calcentral"
+DOCROOT="/var/www/html/${APP_MODE}"
 
 LOG=$(date +"${PWD}/log/update-build_%Y-%m-%d.log")
 LOGIT="tee -a ${LOG}"

@@ -6,18 +6,18 @@ var _ = require('lodash');
 /**
  * My Advising controller
  */
-angular.module('calcentral.controllers').controller('MyAdvisingController', function(myAdvisingFactory, advisingFactory, apiService, $route, $routeParams, $scope, $q) {
+angular.module('calcentral.controllers').controller('MyAdvisingController', function(myAdvisingFactory, apiService, $route, $routeParams, $scope) {
   $scope.myAdvising = {
     isLoading: true
   };
 
-  var isHaasStudent = function(academicRoles) {
-    if (academicRoles.haasFullTimeMba ||
-      academicRoles.haasEveningWeekendMba ||
-      academicRoles.haasExecMba ||
-      academicRoles.haasMastersFinEng ||
-      academicRoles.haasMbaPublicHealth ||
-      academicRoles.haasMbaJurisDoctor) {
+  var isHaasStudent = function() {
+    if ($scope.academicRoles.haasFullTimeMba ||
+      $scope.academicRoles.haasEveningWeekendMba ||
+      $scope.academicRoles.haasExecMba ||
+      $scope.academicRoles.haasMastersFinEng ||
+      $scope.academicRoles.haasMbaPublicHealth ||
+      $scope.academicRoles.haasMbaJurisDoctor) {
       return true;
     }
     return false;
@@ -29,33 +29,15 @@ angular.module('calcentral.controllers').controller('MyAdvisingController', func
     $scope.showAppointmentLinks = apiService.user.profile.features.csAdvisingLinks && _.get(response, 'data.feed.links');
   };
 
-  var getStudentAcademicRoles = function() {
-    var params;
-    var deferred;
-    if ($route.current.isAdvisingStudentLookup) {
-      params = {
-        uid: $routeParams.uid
-      };
-      return advisingFactory.getStudent(params);
-    } else {
-      deferred = $q.defer();
-      deferred.resolve({
-        data: apiService.user.profile
-      });
-      return deferred.promise;
-    }
-  };
-
-  var loadStudentAcademicRoles = function(response) {
-    var academicRoles = _.get(response, 'data.academicRoles');
-    $scope.academicRoles = academicRoles;
-    $scope.showAdvisorsList = !isHaasStudent(academicRoles);
+  var loadStudentAcademicRoles = function() {
+    var isAdvisingStudentLookup = $route.current.isAdvisingStudentLookup;
+    $scope.academicRoles = isAdvisingStudentLookup ? $scope.targetUser.academicRoles : apiService.user.profile.academicRoles;
+    $scope.showAdvisorsList = !isHaasStudent();
   };
 
   var loadFeeds = function() {
     myAdvisingFactory.getStudentAdvisingInfo()
       .then(loadStudentAdvisingInfo)
-      .then(getStudentAcademicRoles)
       .then(loadStudentAcademicRoles)
       .finally(function() {
         $scope.myAdvising.isLoading = false;

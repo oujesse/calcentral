@@ -29,13 +29,13 @@ then
 fi
 
 # run the tests
-if [ "$2" == "uitest" ]; then
-  # run UI tests if we've been given a second arg
-  echo "Running UI tests with RAILS_ENV=$RAILS_ENV"
-  export UI_TEST=true
-  bundle exec rake spec:xml
-else
-  # run regular testext tests
-  echo "Running testext tests"
-  bundle exec rake assets:clean db:reset spec:xml
-fi
+#if [ "$2" == "uitest" ]; then
+#  # run UI tests if we've been given a second arg
+#  echo "Running UI tests with RAILS_ENV=$RAILS_ENV"
+#  export UI_TEST=true
+#  bundle exec rake spec:xml
+#else
+#  # run regular testext tests
+#  echo "Running testext tests"
+#  bundle exec rake assets:clean db:reset spec:xml
+#fi

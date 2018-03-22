@@ -1,4 +1,4 @@
 # Be sure to restart your server when you modify this file.
 
 # Configure sensitive parameters which will be filtered from the log file.
-config.filter_parameters += [:password]
+Calcentral::Application.config.filter_parameters += [:password]

@@ -91,6 +91,9 @@ gem 'torquebox-server', '~> 3.2.0'
 gem 'torquebox-messaging', '~> 3.2.0'
 gem 'jmx', '~> 1.0'
 
+# for building a WAR to deploy on Tomcat
+gem 'warbler', '~> 2.0.4'
+
 # for trying, and trying again, and then giving up.
 gem 'retriable', '~> 1.4'
 
